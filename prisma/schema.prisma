@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model users {
+  id Int @id @default(autoincrement())
+  firstName String?
+  lastName String
+  favSpiritId Int
+  favSpirit spirit @relation(fields: [favSpiritId], references: [id])
+}
+
+model spirit {
+  id Int @id @default(autoincrement())
+  name String?
+  users users[]
+}
+
+// 1 spirit can be assigned to many users, but only 1 user can be assigned to a single spirit
